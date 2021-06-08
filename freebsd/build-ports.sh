@@ -22,7 +22,7 @@ jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=
 #jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 -DWITHOUT_CLEAN buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
-jexec ${JAIL_NAME} pkg install -y poudriere
+jexec ${JAIL_NAME} pkg install -y poudriere lighttpd
 #jexec ${JAIL_NAME} poudriere jail -d -j freebsd14
 #exit 1
 if ! jexec ${JAIL_NAME} poudriere jail -i -j freebsd14; then
@@ -63,6 +63,10 @@ databases/mongodb50
 #sysutils/fusefs-smbnetfs
 #www/grafana7
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
+cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
+cp freebsd/lighttpd.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
+cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
+cp freebsd/vhost.d-poudriere.conf ${JAIL_PATH}/usr/local/etc/lighttpd/vhost.d/poudriere.conf
 jexec ${JAIL_NAME} /usr/local/etc/rc.d/lighttpd restart
 jexec ${JAIL_NAME} pkg fetch -y -o /usr/local/poudriere/data/packages/freebsd14-custom llvm10 rust
 jexec ${JAIL_NAME} poudriere bulk -j freebsd14 -p custom -f /usr/local/etc/poudriere.d/port-list
