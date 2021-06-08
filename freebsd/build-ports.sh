@@ -9,6 +9,7 @@ if test ! COPYRIGHT -nt base.txz; then
 #    find . \( -path ./dev -o -path ./usr/ports -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
     find . \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer base.txz \) -ls
 fi
+mkdir -p ${JAIL_PATH}/usr/ports
 jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 \
     ip4=inherit children.max=99 \
     allow.mount allow.mount.devfs allow.mount.procfs \
