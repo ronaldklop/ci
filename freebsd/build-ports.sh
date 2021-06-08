@@ -67,6 +67,6 @@ cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
 cp freebsd/lighttpd.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/vhost.d-poudriere.conf ${JAIL_PATH}/usr/local/etc/lighttpd/vhost.d/poudriere.conf
-jexec ${JAIL_NAME} /usr/local/etc/rc.d/lighttpd restart
+jexec ${JAIL_NAME} /usr/local/etc/rc.d/lighttpd onerestart
 jexec ${JAIL_NAME} pkg fetch -y -o /usr/local/poudriere/data/packages/freebsd14-custom llvm10 rust
 jexec ${JAIL_NAME} poudriere bulk -j freebsd14 -p custom -f /usr/local/etc/poudriere.d/port-list
