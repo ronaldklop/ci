@@ -45,24 +45,7 @@ MAKE_JOBS_NUMBER=4
 .endif
 #JAVA_VERSION=11
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
-echo "
-#databases/mongodb36
-#databases/mongodb40
-#databases/mongodb40-tools
-#databases/mongodb42
-#databases/mongodb42-tools
-#databases/mongodb44
-#databases/mongodb49
-databases/mongodb50
-#databases/mongodb-tools
-#databases/cassandra4
-#devel/jenkins-lts
-#devel/scons
-#devel/tijmp
-#java/openjdk8
-#sysutils/fusefs-smbnetfs
-#www/grafana7
-" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
+echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
 cp freebsd/lighttpd.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
