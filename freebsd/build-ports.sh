@@ -4,6 +4,8 @@ test -n "$JAIL_PATH" || ( echo "JAIL_PATH is unset" && exit 1 )
 test -n "$JAIL_NAME" || ( echo "JAIL_NAME is unset" && exit 1 )
 test -n "$PORTS" || ( echo "PORTS is unset" && exit 1 )
 
+mkdir -p "$JAIL_PATH"
+
 BASE_TAR="$JAIL_PATH/base.txz"
 FETCH_ARGS=$( test ! -f "$BASE_TAR" || echo "-i $BASE_TAR" )
 fetch -o "$BASE_TAR" ${FETCH_ARGS} "https://download.freebsd.org/ftp/snapshots/arm64/14.0-CURRENT/base.txz"
