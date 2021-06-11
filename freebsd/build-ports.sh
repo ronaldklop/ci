@@ -21,13 +21,12 @@ mkdir -p "${JAIL_PATH}/usr/ports"
 jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs \
     ip4=inherit children.max=99 \
     enforce_statfs=1 \
-    jail_zfs=1 \
     allow.mount \
     allow.mount.devfs \
     allow.mount.procfs \
     allow.mount.nullfs \
     allow.mount.tmpfs \
-    allow_mount_zfs \
+    allow.mount.zfs \
     "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
 
 zfs create "zrpi4/poudriere/$POUDRIERE_NAME"
