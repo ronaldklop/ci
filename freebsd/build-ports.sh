@@ -55,7 +55,7 @@ MAKE_JOBS_NUMBER=4
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
-sed "s/server.port = 80/server.port = $POUDRIERE_PORTNR/" lighttpd.conf > ${JAIL_PATH}/usr/local/etc/lighttpd/lighttpd.conf
+sed "s/server.port = 80/server.port = $POUDRIERE_PORTNR/" freebsd/lighttpd.conf > ${JAIL_PATH}/usr/local/etc/lighttpd/lighttpd.conf
 cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/vhosts.d-poudriere.conf ${JAIL_PATH}/usr/local/etc/lighttpd/vhosts.d/poudriere.conf
 jexec ${JAIL_NAME} /usr/local/etc/rc.d/lighttpd onerestart
