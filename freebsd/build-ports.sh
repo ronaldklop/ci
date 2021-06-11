@@ -18,11 +18,19 @@ if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
     find "$JAIL_PATH" \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer "$BASE_TAR" \) -ls
 fi
 mkdir -p "${JAIL_PATH}/usr/ports"
-jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
+jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs \
     ip4=inherit children.max=99 \
-    allow.mount allow.mount.devfs allow.mount.procfs \
-    enforce_statfs=1 allow.mount.nullfs allow.mount.tmpfs \
+    enforce_statfs=1 \
+    jail_zfs=1 \
+    allow.mount \
+    allow.mount.devfs \
+    allow.mount.procfs \
+    allow.mount.nullfs \
+    allow.mount.tmpfs \
+    allow_mount_zfs \
     "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
+
+zfs create "zrpi4/poudriere/$POUDRIERE_NAME"
 
 #jexec ${JAIL_NAME} truncate -s 0 /etc/src.conf
 #jexec ${JAIL_NAME} echo "NO_INSTALLEXTRAKERNELS=no" >> /etc/src.conf
