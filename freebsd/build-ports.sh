@@ -1,16 +1,19 @@
 #! /bin/sh
 
-JAIL_PATH=${WORKSPACE}
-JAIL_NAME=ports14
-FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/snapshots/arm64/14.0-CURRENT/base.txz"
-if test ! COPYRIGHT -nt base.txz; then
-    tar xmf base.txz
+test -n "$JAIL_PATH" || ( echo "JAIL_PATH is unset" && exit 1 )
+test -n "$JAIL_NAME" || ( echo "JAIL_NAME is unset" && exit 1 )
+test -n "$PORTS" || ( echo "PORTS is unset" && exit 1 )
+
+BASE_TAR="$JAIL_PATH/base.txz"
+FETCH_ARGS=$( test ! -f "$BASE_TAR" || echo "-i $BASE_TAR" )
+fetch -o "$BASE_TAR" ${FETCH_ARGS} "https://download.freebsd.org/ftp/snapshots/arm64/14.0-CURRENT/base.txz"
+if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
+    tar xm -C "$JAIL_PATH" -f "$BASE_TAR"
 #    find . \( -path ./dev -o -path ./usr/ports -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
-    find . \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer base.txz \) -ls
+    find "$JAIL_PATH" \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer "$BASE_TAR" \) -ls
 fi
-mkdir -p ${JAIL_PATH}/usr/ports
-jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 \
+mkdir -p "${JAIL_PATH}/usr/ports"
+jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
     ip4=inherit children.max=99 \
     allow.mount allow.mount.devfs allow.mount.procfs \
     enforce_statfs=1 allow.mount.nullfs allow.mount.tmpfs \
