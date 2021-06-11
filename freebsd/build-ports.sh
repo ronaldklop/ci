@@ -18,7 +18,7 @@ if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
     find "$JAIL_PATH" \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer "$BASE_TAR" \) -ls
 fi
 mkdir -p "${JAIL_PATH}/usr/ports"
-jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs \
+jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
     ip4=inherit children.max=99 \
     enforce_statfs=1 \
     allow.mount \
