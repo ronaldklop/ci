@@ -5,6 +5,7 @@ test -n "$JAIL_NAME" || ( echo "JAIL_NAME is unset" && exit 1 )
 test -n "$PORTS" || ( echo "PORTS is unset" && exit 1 )
 test -n "$POUDRIERE_NAME" || ( echo "POUDRIERE_NAME is unset" && exit 1 )
 test -n "$POUDRIERE_VERSION" || ( echo "POUDRIERE_VERSION is unset" && exit 1 )
+test -n "$POUDRIERE_PORTNR" || ( echo "POUDRIERE_PORTNR is unset" && exit 1 )
 
 mkdir -p "$JAIL_PATH"
 
@@ -54,7 +55,7 @@ MAKE_JOBS_NUMBER=4
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
-cp freebsd/lighttpd.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
+sed "s/server.port = 80/server.port = $POUDRIERE_PORTNR/" lighttpd.conf > ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/vhosts.d-poudriere.conf ${JAIL_PATH}/usr/local/etc/lighttpd/vhosts.d/poudriere.conf
 jexec ${JAIL_NAME} /usr/local/etc/rc.d/lighttpd onerestart
