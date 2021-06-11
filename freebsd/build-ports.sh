@@ -29,7 +29,9 @@ jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rule
     allow.mount.zfs \
     "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
 
-zfs create "zrpi4/poudriere/$POUDRIERE_NAME"
+zfs get jailed zrpi4/poudriere
+
+zfs jail "${JAIL_NAME}" "zrpi4/poudriere"
 
 #jexec ${JAIL_NAME} truncate -s 0 /etc/src.conf
 #jexec ${JAIL_NAME} echo "NO_INSTALLEXTRAKERNELS=no" >> /etc/src.conf
