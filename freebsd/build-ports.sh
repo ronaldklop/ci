@@ -18,7 +18,7 @@ if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
     find "$JAIL_PATH" \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer "$BASE_TAR" \) -ls
 fi
 mkdir -p "${JAIL_PATH}/usr/ports"
-jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
+jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
     ip4=inherit children.max=99 \
     enforce_statfs=1 \
     allow.mount \
@@ -28,7 +28,7 @@ jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rule
     allow.mount.tmpfs \
     allow.mount.zfs \
     "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
-trap 'jail -r ${JAIL_NAME}' EXIT
+trap 'jail -vr ${JAIL_NAME}' EXIT
 
 zfs create "zrpi4/poudriere/${JAIL_NAME}"
 #zfs set jailed=on "zrpi4/poudriere/${JAIL_NAME}"
