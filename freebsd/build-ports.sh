@@ -28,6 +28,7 @@ jail -cmr "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rule
     allow.mount.tmpfs \
     allow.mount.zfs \
     "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
+trap 'jail -r ${JAIL_NAME}' EXIT
 
 zfs create "zrpi4/poudriere/${JAIL_NAME}"
 #zfs set jailed=on "zrpi4/poudriere/${JAIL_NAME}"
