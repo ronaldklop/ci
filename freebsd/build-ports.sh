@@ -2,6 +2,7 @@
 
 test -n "$JAIL_PATH" || ( echo "JAIL_PATH is unset" && exit 1 )
 test -n "$JAIL_NAME" || ( echo "JAIL_NAME is unset" && exit 1 )
+test -n "$JAIL_VERSION" || ( echo "JAIL_VERSION is unset" && exit 1 )
 test -n "$PORTS" || ( echo "PORTS is unset" && exit 1 )
 test -n "$POUDRIERE_NAME" || ( echo "POUDRIERE_NAME is unset" && exit 1 )
 test -n "$POUDRIERE_VERSION" || ( echo "POUDRIERE_VERSION is unset" && exit 1 )
@@ -11,7 +12,7 @@ mkdir -p "$JAIL_PATH"
 
 BASE_TAR="$JAIL_PATH/base.txz"
 FETCH_ARGS=$( test ! -f "$BASE_TAR" || echo "-i $BASE_TAR" )
-fetch -o "$BASE_TAR" ${FETCH_ARGS} "https://download.freebsd.org/ftp/snapshots/arm64/14.0-CURRENT/base.txz"
+fetch -o "$BASE_TAR" ${FETCH_ARGS} "https://download.freebsd.org/ftp/snapshots/arm64/${JAIL_VERSION}/base.txz"
 if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
     tar xm -C "$JAIL_PATH" -f "$BASE_TAR"
 #    find . \( -path ./dev -o -path ./usr/ports -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
