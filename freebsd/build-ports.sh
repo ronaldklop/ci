@@ -72,6 +72,11 @@ sed "s/server.port = 80/server.port = $POUDRIERE_PORTNR/" freebsd/lighttpd.conf 
 cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
 cp freebsd/vhosts.d-poudriere.conf ${JAIL_PATH}/usr/local/etc/lighttpd/vhosts.d/poudriere.conf
 
-jexec ${JAIL_NAME} /usr/local/etc/rc.d/lighttpd onerestart
+jail -v -cm "name=${JAIL_NAME}_lighttpd" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
+    ip4=inherit \
+    allow.mount \
+    allow.mount.devfs \
+    command=/usr/local/etc/rc.d/lighttpd onerestart
+
 jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm10 rust go
 jexec ${JAIL_NAME} poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list
