@@ -22,6 +22,7 @@ mkdir -p "${JAIL_PATH}/usr/ports"
 jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
     ip4=inherit children.max=99 \
     enforce_statfs=1 \
+    osreldate=1400024 \
     allow.mount \
     allow.mount.devfs \
     allow.mount.procfs \
