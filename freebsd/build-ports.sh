@@ -61,8 +61,9 @@ MAKE_JOBS_NUMBER=4
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
 
-#jexec ${JAIL_NAME} poudriere jail -d -j "$POUDRIERE_NAME"
-#exit 1
+if test -n "$REMOVE_POUDRIERE"; then
+	jexec ${JAIL_NAME} poudriere jail -d -j "$POUDRIERE_NAME"
+fi
 if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
     jexec ${JAIL_NAME} poudriere jail -c -j "$POUDRIERE_NAME" -v "$POUDRIERE_VERSION"
     jexec ${JAIL_NAME} poudriere ports -c -f none -M /usr/ports -m null -p custom
