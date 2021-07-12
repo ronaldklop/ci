@@ -56,7 +56,6 @@ MAKE_JOBS_NUMBER=4
 MAKE_JOBS_NUMBER=4
 .endif
 #JAVA_VERSION=11
-IGNORE_OSVERSION=yes
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
@@ -81,7 +80,4 @@ jail -v -cm "name=${JAIL_NAME}_lighttpd" persist "path=${JAIL_PATH}" mount.devfs
     command=/usr/local/etc/rc.d/lighttpd onerestart
 
 jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm10 llvm11 rust go gcc10 ${PREINSTALL_PKGS}
-sed -i .sed.bak "s/:setenv=/:setenv=IGNORE_OSVERSION=yes,/" "${JAIL_PATH}/usr/local/poudriere/jails/$POUDRIERE_NAME/etc/login.conf"
-mkdir -p "${JAIL_PATH}/usr/local/poudriere/jails/$POUDRIERE_NAME/usr/local/etc"
-echo IGNORE_OSVERSION=YES > "${JAIL_PATH}/usr/local/poudriere/jails/$POUDRIERE_NAME/usr/local/etc/pkg.conf"
 jexec ${JAIL_NAME} poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list
