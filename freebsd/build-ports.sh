@@ -79,5 +79,5 @@ jail -v -cm "name=${JAIL_NAME}_lighttpd" persist "path=${JAIL_PATH}" mount.devfs
     allow.mount.devfs \
     command=/usr/local/etc/rc.d/lighttpd onerestart
 
-jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm10 rust go gcc10
+jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm10 llvm11 rust go gcc10
 jexec ${JAIL_NAME} poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list
