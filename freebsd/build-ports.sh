@@ -12,7 +12,9 @@ mkdir -p "$JAIL_PATH"
 
 BASE_TAR="$JAIL_PATH/base.txz"
 FETCH_ARGS=$( test ! -f "$BASE_TAR" || echo "-i $BASE_TAR" )
-fetch -o "$BASE_TAR" ${FETCH_ARGS} "https://download.freebsd.org/ftp/snapshots/arm64/${JAIL_VERSION}/base.txz"
+ARTIFACT_URL="https://artifact.ci.freebsd.org/snapshot/${JAIL_VRESION}/latest/arm64/aarch64/base.txz"
+SNAPSHOT_URL="https://download.freebsd.org/ftp/snapshots/arm64/${JAIL_VERSION}/base.txz"
+fetch -o "$BASE_TAR" ${FETCH_ARGS} "$ARTIFACT_URL"
 if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
     tar xm -C "$JAIL_PATH" -f "$BASE_TAR"
 #    find . \( -path ./dev -o -path ./usr/ports -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
