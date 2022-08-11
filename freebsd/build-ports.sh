@@ -48,6 +48,11 @@ echo "
 MAKE_JOBS_NUMBER=2
 .if \${.CURDIR:M*/databases/mongodb*}
 MAKE_JOBS_NUMBER=4
+OPTIONS_UNSET+=LTO
+#LDFLAGS.lld+= -Wl,--no-threads
+.endif
+.if \${.CURDIR:M*/databases/mongodb50*}
+MAKE_JOBS_NUMBER=1
 #OPTIONS_UNSET+=LTO
 LDFLAGS.lld+= -Wl,--no-threads
 .endif
