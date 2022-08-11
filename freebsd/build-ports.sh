@@ -46,12 +46,12 @@ sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 jexec ${JAIL_NAME} pkg install -y poudriere lighttpd
 echo "
 MAKE_JOBS_NUMBER=2
-.if \${.CURDIR:M*/databases/mongodb*}
+.if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
 OPTIONS_UNSET+=LTO
 #LDFLAGS.lld+= -Wl,--no-threads
 .endif
-.if \${.CURDIR:M*/databases/mongodb50*}
+.if \${.CURDIR:M*/databases/mongodb5*}
 MAKE_JOBS_NUMBER=1
 #OPTIONS_UNSET+=LTO
 LDFLAGS.lld+= -Wl,--no-threads
