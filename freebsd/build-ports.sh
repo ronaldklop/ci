@@ -52,9 +52,9 @@ OPTIONS_UNSET+=LTO
 #LDFLAGS.lld+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb5*}
-MAKE_JOBS_NUMBER=1
-#OPTIONS_UNSET+=LTO
-LDFLAGS.lld+= -Wl,--no-threads
+MAKE_JOBS_NUMBER=4
+OPTIONS_UNSET+=LTO
+#LDFLAGS.lld+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
 MAKE_JOBS_NUMBER=4
