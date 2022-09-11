@@ -49,17 +49,17 @@ MAKE_JOBS_NUMBER=2
 .if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
 OPTIONS_UNSET+=LTO
-#LDFLAGS.lld+= -Wl,--no-threads
+LDFLAGS.lld+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb5*}
 MAKE_JOBS_NUMBER=4
 OPTIONS_UNSET+=LTO
-#LDFLAGS.lld+= -Wl,--no-threads
+LDFLAGS.lld+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb6*}
 MAKE_JOBS_NUMBER=3
 OPTIONS_UNSET+=LTO
-#LDFLAGS.lld+= -Wl,--no-threads
+LDFLAGS.lld+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
 MAKE_JOBS_NUMBER=4
