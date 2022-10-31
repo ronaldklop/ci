@@ -42,7 +42,9 @@ zfs jail "${JAIL_NAME}" "zrpi4/poudriere/${JAIL_NAME}"
 #jexec ${JAIL_NAME} echo "KERNCONF=GENERIC-NODEBUG GENERIC" >> /etc/src.conf
 #jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 -DWITHOUT_CLEAN buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
-sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
+if test "$POUDRIERE_NAME" != "freebsd12"; then
+	sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
+fi
 jexec ${JAIL_NAME} pkg install -y poudriere lighttpd
 echo "
 MAKE_JOBS_NUMBER=2
