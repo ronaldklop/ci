@@ -51,7 +51,7 @@ MAKE_JOBS_NUMBER=2
 .if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
 OPTIONS_UNSET+=LTO
-LDFLAGS+= -Wl,--no-threads
+#LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb5*}
 MAKE_JOBS_NUMBER=4
