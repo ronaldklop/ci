@@ -12,6 +12,9 @@ jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=
 jexec ${JAIL_NAME} truncate -s 0 /etc/src.conf
 jexec ${JAIL_NAME} echo "NO_INSTALLEXTRAKERNELS=no" >> /etc/src.conf
 jexec ${JAIL_NAME} echo "KERNCONF=GENERIC-NODEBUG GENERIC" >> /etc/src.conf
+jexec ${JAIL_NAME} echo "CROSS_TOOLCHAIN=llvm14" >> /etc/src.conf
+jexec ${JAIL_NAME} echo "WITHOUT_TOOLCHAIN=yes" >> /etc/src.conf
+jexec ${JAIL_NAME} pkg install -y llvm14
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 -DWITHOUT_CLEAN buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
