@@ -1,25 +1,39 @@
 #! /bin/sh
 
 JAIL_PATH=${WORKSPACE}
-JAIL_NAME=world
+JAIL_NAME=world14
+LLVM_VER=15
+
+CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/releases/arm64/13.0-RELEASE/base.txz"
+fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/releases/arm64/13.1-RELEASE/base.txz"
 if test ! COPYRIGHT -nt base.txz; then
     tar xmf base.txz
     find . \( -path ./dev -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
 fi
 jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 ip4=inherit
-jexec ${JAIL_NAME} truncate -s 0 /etc/src.conf
-jexec ${JAIL_NAME} echo "NO_INSTALLEXTRAKERNELS=no" >> /etc/src.conf
-jexec ${JAIL_NAME} echo "KERNCONF=GENERIC-NODEBUG GENERIC" >> /etc/src.conf
-jexec ${JAIL_NAME} echo "CROSS_TOOLCHAIN=llvm14" >> /etc/src.conf
-jexec ${JAIL_NAME} echo "WITHOUT_TOOLCHAIN=yes" >> /etc/src.conf
-jexec ${JAIL_NAME} pkg install -y llvm14
+echo "
+COMPILER_TYPE=clang
+CC=/usr/local/bin/clang${LLVM_VER}
+CXX=/usr/local/bin/clang++${LLVM_VER}
+CPP=/usr/local/bin/clang-cpp${LLVM_VER}
+LD=/usr/local/bin/ld.lld${LLVM_VER}
+" > ${JAIL_PATH}/etc/make.conf
+echo "
+NO_INSTALLEXTRAKERNELS=no
+KERNCONF=GENERIC-NODEBUG GENERIC
+#CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
+WITHOUT_CLANG=yes
+WITHOUT_TOOLCHAIN=yes
+WITHOUT_CROSS_COMPILER=yes
+" > ${JAIL_PATH}/etc/src.conf
+# jexec ${JAIL_NAME} rm -f /usr/bin/cc /usr/bin/c++
+cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
+pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN}
+#jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old"
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 -DWITHOUT_CLEAN buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 # clean up old builds
-if test -d ${JAIL_PATH}/usr/obj/usr/src/repo; then
-    rm -r ${JAIL_PATH}/usr/obj/usr/src/repo
-fi
+rm -r ${JAIL_PATH}/usr/obj/usr/src/repo
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 packages
