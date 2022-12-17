@@ -1,6 +1,5 @@
-node {   
+node('root') {
 def buildWorld
-label root
 
 stage('Prepare/Checkout') { // for display purposes
     git branch: 'main', url: 'https://git.freebsd.org/src.git'
