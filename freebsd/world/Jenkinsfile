@@ -11,7 +11,7 @@ stage('Checkout') {
 
 //    git branch: 'main', url: 'https://git.freebsd.org/src.git'
 
-    dir('a-child-repo') {
+    dir('ci') {
        git branch: 'main', url: 'https://github.com/ronaldklop/ci.git'
     }
 
@@ -22,7 +22,7 @@ stage('Checkout') {
 
 stage('Build') {
   if (isUnix()) {
-     sh "'freebsd/build/worls/build.sh'"
+     sh "'ci/freebsd/build/worls/build.sh'"
   } else {
      bat(/"${gradleHome}\bin\gradle" clean build/)
   }
