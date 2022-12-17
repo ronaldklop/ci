@@ -1,0 +1,23 @@
+node {   
+def buildWorld
+
+stage('Prepare/Checkout') { // for display purposes
+    git branch: 'main', url: 'https://git.freebsd.org/src.git'
+
+    dir('a-child-repo') {
+       git branch: 'main', url: 'https://github.com/ronaldklop/ci.git'
+    }
+
+//    env.JAVA_HOME="${tool 'JDK8'}"
+//    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}" // set java home in jdk environment
+//    gradleHome = tool '3.4.1' 
+}
+
+stage('Build') {
+  if (isUnix()) {
+     sh "'freebsd/build/worls/build.sh'"
+  } else {
+     bat(/"${gradleHome}\bin\gradle" clean build/)
+  }
+}
+}
