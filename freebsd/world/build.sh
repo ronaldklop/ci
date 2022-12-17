@@ -10,6 +10,7 @@ fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/releases/arm64/13.1-REL
 if test ! COPYRIGHT -nt base.txz; then
     tar xmf base.txz
     find . \( -path ./dev -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
+    mkdir -p dev
 fi
 jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 ip4=inherit
 echo "
