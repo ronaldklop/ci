@@ -2,13 +2,14 @@ node('root') {
 def buildWorld
 
 stage('Checkout') {
+  dir('usr/src') {
     checkout([$class: 'GitSCM',
         branches: [[name: '*/main']],
         extensions: [[$class: 'CloneOption', timeout: 120]],
         gitTool: 'Default', 
         userRemoteConfigs: [[url: 'https://git.freebsd.org/src.git']]
     ])
-
+  }
 //    git branch: 'main', url: 'https://git.freebsd.org/src.git'
 
     dir('ci') {
