@@ -64,7 +64,7 @@ OPTIONS_UNSET+=LTO
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
-MAKE_JOBS_NUMBER=1
+MAKE_JOBS_NUMBER=2
 OPTIONS_UNSET+=LTO
 #LDFLAGS+= -Wl,--no-threads
 .endif
