@@ -6,7 +6,7 @@ LLVM_VER=15
 
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/releases/arm64/13.1-RELEASE/base.txz"
+fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/releases/arm64/13.2-RELEASE/base.txz"
 if test ! COPYRIGHT -nt base.txz; then
     tar xmf base.txz
     find . \( -path ./dev -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
@@ -32,7 +32,7 @@ WITHOUT_CROSS_COMPILER=yes
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN}
 #jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old"
-jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 -DWITHOUT_CLEAN buildworld buildkernel
+jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 # clean up old builds
