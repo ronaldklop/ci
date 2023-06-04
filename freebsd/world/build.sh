@@ -13,17 +13,17 @@ if test ! COPYRIGHT -nt base.txz; then
 fi
 mkdir -p dev
 jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 ip4=inherit
-echo "
-COMPILER_TYPE=clang
-CC=/usr/local/bin/clang${LLVM_VER}
-CXX=/usr/local/bin/clang++${LLVM_VER}
-CPP=/usr/local/bin/clang-cpp${LLVM_VER}
-LD=/usr/local/bin/ld.lld${LLVM_VER}
-" > ${JAIL_PATH}/etc/make.conf
+#echo "
+#COMPILER_TYPE=clang
+#CC=/usr/local/bin/clang${LLVM_VER}
+#CXX=/usr/local/bin/clang++${LLVM_VER}
+#CPP=/usr/local/bin/clang-cpp${LLVM_VER}
+#LD=/usr/local/bin/ld.lld${LLVM_VER}
+#" > ${JAIL_PATH}/etc/make.conf
 echo "
 NO_INSTALLEXTRAKERNELS=no
 KERNCONF=GENERIC-NODEBUG GENERIC
-#CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
+CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
 WITHOUT_CLANG=yes
 WITHOUT_TOOLCHAIN=yes
 WITHOUT_CROSS_COMPILER=yes
