@@ -49,3 +49,4 @@ sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 # clean up old builds
 rm -r ${JAIL_PATH}/usr/obj/usr/src/repo
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 packages
+jail -vr ${JAIL_NAME}
