@@ -7,10 +7,12 @@ LLVM_VER=15
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
 JAIL_VERSION=14.0-CURRENT
+ARCH=$(uname -p)
+NUM_CPUS=$(sysctl -n kern.smp.cpus)
 if test "${JAIL_VERSION#*-}" = "RELEASE"; then
-    SNAPSHOT_URL="https://download.freebsd.org/releases/arm64/${JAIL_VERSION}/base.txz"
+    SNAPSHOT_URL="https://download.freebsd.org/releases/${ARCH}/${JAIL_VERSION}/base.txz"
 else
-    SNAPSHOT_URL="https://download.freebsd.org/snapshots/arm64/${JAIL_VERSION}/base.txz"
+    SNAPSHOT_URL="https://download.freebsd.org/snapshots/${ARCH}/${JAIL_VERSION}/base.txz"
 fi
 fetch -v ${FETCH_ARGS} "${SNAPSHOT_URL}"
 if test ! COPYRIGHT -nt base.txz; then
@@ -18,7 +20,10 @@ if test ! COPYRIGHT -nt base.txz; then
     find . \( -path ./dev -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
 fi
 mkdir -p dev
-jail -cmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 ip4=inherit
+
+trap 'jail -vr ${JAIL_NAME}' EXIT
+
+jail -vcmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 ip4=inherit
 #echo "
 #COMPILER_TYPE=clang
 #CC=/usr/local/bin/clang${LLVM_VER}
@@ -38,7 +43,7 @@ WITHOUT_TESTS=yes
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN}
 #jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old"
-jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j1 buildworld buildkernel
+jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j${NUM_CPUS} buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 # clean up old builds
