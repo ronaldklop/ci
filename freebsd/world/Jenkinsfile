@@ -23,7 +23,7 @@ stage('Checkout') {
 
 stage('Build') {
   if (isUnix()) {
-     sh "sh -x ci/freebsd/world/build.sh"
+     sh "sh -ex ci/freebsd/world/build.sh"
   } else {
      bat(/"${gradleHome}\bin\gradle" clean build/)
   }
