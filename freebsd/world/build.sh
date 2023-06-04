@@ -32,6 +32,7 @@ KERNCONF=GENERIC-NODEBUG GENERIC
 CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
 WITHOUT_TOOLCHAIN=yes
 WITHOUT_CROSS_COMPILER=yes
+WITHOUT_TESTS=yes
 " > ${JAIL_PATH}/etc/src.conf
 # jexec ${JAIL_NAME} rm -f /usr/bin/cc /usr/bin/c++
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
