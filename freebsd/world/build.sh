@@ -31,13 +31,13 @@ NO_INSTALLEXTRAKERNELS=no
 KERNCONF=GENERIC-NODEBUG GENERIC
 CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
 WITHOUT_TOOLCHAIN=yes
-#WITHOUT_CROSS_COMPILER=yes
+WITHOUT_CROSS_COMPILER=yes
 " > ${JAIL_PATH}/etc/src.conf
 # jexec ${JAIL_NAME} rm -f /usr/bin/cc /usr/bin/c++
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN}
 #jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old"
-jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j4 buildworld buildkernel
+jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j1 buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 # clean up old builds
