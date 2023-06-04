@@ -16,6 +16,7 @@ else
 fi
 fetch -v ${FETCH_ARGS} "${SNAPSHOT_URL}"
 if test ! COPYRIGHT -nt base.txz; then
+    chflags -R noschg .
     tar xmf base.txz
     find . \( -path ./dev -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
 fi
@@ -24,25 +25,40 @@ mkdir -p dev
 trap 'jail -vr ${JAIL_NAME}' EXIT
 
 jail -vcmr name=${JAIL_NAME} persist path=${JAIL_PATH} mount.devfs devfs_ruleset=0 ip4=inherit
-#echo "
+echo "
 #COMPILER_TYPE=clang
-#CC=/usr/local/bin/clang${LLVM_VER}
-#CXX=/usr/local/bin/clang++${LLVM_VER}
-#CPP=/usr/local/bin/clang-cpp${LLVM_VER}
-#LD=/usr/local/bin/ld.lld${LLVM_VER}
-#" > ${JAIL_PATH}/etc/make.conf
+CC=/usr/local/bin/clang${LLVM_VER}
+CXX=/usr/local/bin/clang++${LLVM_VER}
+CPP=/usr/local/bin/clang-cpp${LLVM_VER}
+LD=/usr/local/bin/ld.lld${LLVM_VER}
+" > ${JAIL_PATH}/etc/make.conf
 echo "
 NO_INSTALLEXTRAKERNELS=no
 KERNCONF=GENERIC-NODEBUG GENERIC
-CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
-WITHOUT_TOOLCHAIN=yes
+#CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}
+
+#WITHOUT_TOOLCHAIN=yes
+
+WITHOUT_CLANG=yes
+WITHOUT_CLANG_EXTRAS=yes
+WITHOUT_CLANG_FORMAT=yes
+WITHOUT_CLANG_FULL=yes
+WITHOUT_LLD=yes
+WITHOUT_LLDB=yes
+WITHOUT_LLVM_BINUTILS=yes
+WITHOUT_LLVM_COV=yes
+
 WITHOUT_CROSS_COMPILER=yes
+
+#WITHOUT_CLEAN=yes
 WITHOUT_TESTS=yes
 " > ${JAIL_PATH}/etc/src.conf
 # jexec ${JAIL_NAME} rm -f /usr/bin/cc /usr/bin/c++
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
-pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN}
-#jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old"
+pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN} # byacc
+jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old delete-old-libs"
+cd ${JAIL_PATH}/usr/bin && rm -f cc CC c++ cpp
+#cd ${JAIL_PATH}/usr/bin && ln -s ../local/bin/yacc
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j${NUM_CPUS} buildworld buildkernel
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
