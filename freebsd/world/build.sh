@@ -6,7 +6,13 @@ LLVM_VER=15
 
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-fetch -v ${FETCH_ARGS} "https://download.freebsd.org/ftp/releases/arm64/13.2-RELEASE/base.txz"
+JAIL_VERSION=14.0-CURRENT
+if test "${JAIL_VERSION#*-}" = "RELEASE"; then
+    SNAPSHOT_URL="https://download.freebsd.org/releases/arm64/${JAIL_VERSION}/base.txz"
+else
+    SNAPSHOT_URL="https://download.freebsd.org/snapshots/arm64/${JAIL_VERSION}/base.txz"
+fi
+fetch -v ${FETCH_ARGS} "${SNAPSHOT_URL}"
 if test ! COPYRIGHT -nt base.txz; then
     tar xmf base.txz
     find . \( -path ./dev -o -path ./usr/src -o -path ./usr/obj \) -prune -o ! -newer base.txz -ls
