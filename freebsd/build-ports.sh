@@ -88,7 +88,7 @@ if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
     jexec ${JAIL_NAME} poudriere jail -c -j "$POUDRIERE_NAME" -v "$POUDRIERE_VERSION"
     jexec ${JAIL_NAME} poudriere ports -c -f none -M /usr/ports -m null -p custom
 fi
-#jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
+jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
 
 sed "s/server.port = 80/server.port = $POUDRIERE_PORTNR/" freebsd/lighttpd.conf > ${JAIL_PATH}/usr/local/etc/lighttpd/lighttpd.conf
 cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
