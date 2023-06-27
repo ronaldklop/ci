@@ -16,7 +16,8 @@ ARTIFACT_URL="https://artifact.ci.freebsd.org/snapshot/${JAIL_VERSION}/latest/ar
 if test "${JAIL_VERSION#*-}" = "RELEASE"; then
     SNAPSHOT_URL="https://download.freebsd.org/releases/arm64/${JAIL_VERSION}/base.txz"
 else
-    SNAPSHOT_URL="https://download.freebsd.org/ftp/snapshots/arm64/${JAIL_VERSION}/base.txz"
+    SNAPSHOT_URL="${ARTIFACT_URL}"
+# "https://download.freebsd.org/snapshots/arm64/${JAIL_VERSION}/base.txz"
 fi
 fetch -o "$BASE_TAR" ${FETCH_ARGS} "$SNAPSHOT_URL"
 if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
