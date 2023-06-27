@@ -53,24 +53,21 @@ fi
 jexec ${JAIL_NAME} pkg install -y poudriere lighttpd
 echo "
 MAKE_JOBS_NUMBER=2
+OPTIONS_UNSET+=LTO
 .if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
-OPTIONS_UNSET+=LTO
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb5*}
 MAKE_JOBS_NUMBER=4
-OPTIONS_UNSET+=LTO
 #LDFLAGS+= --threads=1
 .endif
 .if \${.CURDIR:M*/databases/mongodb6*}
-MAKE_JOBS_NUMBER=2
-OPTIONS_UNSET+=LTO
+MAKE_JOBS_NUMBER=4
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
 MAKE_JOBS_NUMBER=4
-OPTIONS_UNSET+=LTO
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
