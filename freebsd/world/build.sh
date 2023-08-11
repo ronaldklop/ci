@@ -4,6 +4,8 @@ JAIL_PATH=${WORKSPACE}
 JAIL_NAME=world14
 LLVM_VER=15
 
+cd ${JAIL_PATH} || exit 1
+
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
 JAIL_VERSION=14.0-CURRENT
@@ -55,6 +57,7 @@ WITHOUT_TESTS=yes
 " > ${JAIL_PATH}/etc/src.conf
 # jexec ${JAIL_NAME} rm -f /usr/bin/cc /usr/bin/c++
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
+pkg -j ${JAIL_NAME} upgrade -y
 pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN} # byacc
 jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make -C /usr/src delete-old delete-old-libs"
 cd ${JAIL_PATH}/usr/bin && rm -f cc CC c++ cpp
