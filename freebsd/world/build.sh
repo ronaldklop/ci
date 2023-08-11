@@ -68,4 +68,5 @@ sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 # clean up old builds
 test -d ${JAIL_PATH}/usr/obj/usr/src/repo && rm -r ${JAIL_PATH}/usr/obj/usr/src/repo
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j${NUM_CPUS} packages
+trap - EXIT
 jail -vr ${JAIL_NAME}
