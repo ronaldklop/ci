@@ -2,7 +2,7 @@
 
 JAIL_PATH=${WORKSPACE}
 JAIL_NAME=world14
-LLVM_VER=15
+LLVM_VER=16
 
 cd ${JAIL_PATH} || exit 1
 
