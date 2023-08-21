@@ -59,8 +59,7 @@ WITHOUT_TOOLCHAIN=yes
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 
 pkg -j ${JAIL_NAME} delete -a -y
-
-#cd ${JAIL_PATH}/usr/bin && rm -f cc CC c++ cpp
+pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN} byacc
 
 jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make CC=${LLVM_DIR}/bin/clang LD=${LLVM_DIR}/bin/ld.lld -C /usr/src delete-old delete-old-libs"
 
@@ -70,11 +69,7 @@ cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/clang++ c++
 cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/clang-cpp cpp
 cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/llvm-objcopy objcopy
 cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/ld
-
-#pkg -j ${JAIL_NAME} delete -y binutils
-pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN} byacc
-# binutils
-cd ${JAIL_PATH}/usr/bin && ln -s ../local/bin/yacc
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/bin/yacc
 
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j${NUM_CPUS} buildworld buildkernel
 
