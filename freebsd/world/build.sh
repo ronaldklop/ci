@@ -2,13 +2,13 @@
 
 JAIL_PATH=${WORKSPACE}
 JAIL_NAME=world14
-LLVM_VER=16
+LLVM_VER=${LLVM_VER:-16}
 
 cd ${JAIL_PATH} || exit 1
 
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-JAIL_VERSION=14.0-CURRENT
+JAIL_VERSION=14.0-ALPHA2
 ARCH=$(uname -m)
 NUM_CPUS=${NUM_CPUS:-$(sysctl -n kern.smp.cpus)}
 
@@ -55,6 +55,10 @@ WITHOUT_TOOLCHAIN=yes
 #WITHOUT_CLEAN=yes
 " > ${JAIL_PATH}/etc/make.conf
 
+echo "
+KERNCONF?=GENERIC-NODEBUG
+" > ${JAIL_PATH}/etc/src.conf
+
 # jexec ${JAIL_NAME} rm -f /usr/bin/cc /usr/bin/c++
 cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 
@@ -63,12 +67,12 @@ pkg -j ${JAIL_NAME} install -y ${CROSS_TOOLCHAIN} byacc
 
 jexec ${JAIL_NAME} sh -c "yes | /usr/bin/make CC=${LLVM_DIR}/bin/clang LD=${LLVM_DIR}/bin/ld.lld -C /usr/src delete-old delete-old-libs"
 
-cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/clang cc
-cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/clang CC
-cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/clang++ c++
-cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/clang-cpp cpp
-cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/llvm-objcopy objcopy
-cd ${JAIL_PATH}/usr/bin && ln -fs ../local/llvm16/bin/ld
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/${CROSS_TOOLCHAIN}/bin/clang cc
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/${CROSS_TOOLCHAIN}/bin/clang CC
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/${CROSS_TOOLCHAIN}/bin/clang++ c++
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/${CROSS_TOOLCHAIN}/bin/clang-cpp cpp
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/${CROSS_TOOLCHAIN}/bin/llvm-objcopy objcopy
+cd ${JAIL_PATH}/usr/bin && ln -fs ../local/${CROSS_TOOLCHAIN}/bin/ld
 cd ${JAIL_PATH}/usr/bin && ln -fs ../local/bin/yacc
 
 jexec ${JAIL_NAME} /usr/bin/make -C /usr/src -j${NUM_CPUS} buildworld buildkernel
