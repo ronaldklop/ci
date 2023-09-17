@@ -8,11 +8,13 @@ cd ${JAIL_PATH} || exit 1
 
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-JAIL_VERSION=14.0-ALPHA2
+JAIL_VERSION=14.0-BETA2
 ARCH=$(uname -m)
 NUM_CPUS=${NUM_CPUS:-$(sysctl -n kern.smp.cpus)}
 
-if test "${JAIL_VERSION#*-}" = "RELEASE"; then
+_SUFFIX="${JAIL_VERSION#*-}"
+_VERSION="${_SUFFIX%%[0-9]}"
+if test "${_VERSION}" = "RELEASE" -o "${_VERSION}" = "BETA"; then
     SNAPSHOT_URL="https://download.freebsd.org/releases/${ARCH}/${JAIL_VERSION}/base.txz"
 else
     SNAPSHOT_URL="https://download.freebsd.org/snapshots/${ARCH}/${JAIL_VERSION}/base.txz"
