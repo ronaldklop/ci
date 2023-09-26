@@ -35,7 +35,7 @@ jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rules
     allow.mount.nullfs \
     allow.mount.tmpfs \
     allow.mount.zfs \
-    "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
+    "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0" \
     "mount=/usr/local/poudriere	${JAIL_PATH}/usr/local/poudriere	nullfs	rw	0	0"
 trap 'jail -vr ${JAIL_NAME}; umount ${JAIL_PATH}/usr/local/poudriere ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev' EXIT
 
