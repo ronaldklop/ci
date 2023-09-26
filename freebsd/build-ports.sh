@@ -6,7 +6,6 @@ test -n "$JAIL_VERSION" || ( echo "JAIL_VERSION is unset" && exit 1 )
 test -n "$PORTS" || ( echo "PORTS is unset" && exit 1 )
 test -n "$POUDRIERE_NAME" || ( echo "POUDRIERE_NAME is unset" && exit 1 )
 test -n "$POUDRIERE_VERSION" || ( echo "POUDRIERE_VERSION is unset" && exit 1 )
-test -n "$POUDRIERE_PORTNR" || ( echo "POUDRIERE_PORTNR is unset" && exit 1 )
 
 mkdir -p "$JAIL_PATH"
 
@@ -26,6 +25,7 @@ if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
     find "$JAIL_PATH" \( -path ./dev -o -path ./usr/ports -o -path ./usr/local -o -path ./usr/src -o -path ./usr/obj \) -prune -o \( -type f -a ! -newer "$BASE_TAR" \) -ls
 fi
 mkdir -p "${JAIL_PATH}/usr/ports"
+mkdir -p "${JAIL_PATH}/usr/local/poudriere"
 jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
     ip4=inherit children.max=99 \
     enforce_statfs=1 \
@@ -36,7 +36,8 @@ jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rules
     allow.mount.tmpfs \
     allow.mount.zfs \
     "mount=/usr/ports	${JAIL_PATH}/usr/ports	nullfs	ro	0	0"
-trap 'jail -vr ${JAIL_NAME}; umount ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev' EXIT
+    "mount=/usr/local/poudriere	${JAIL_PATH}/usr/local/poudriere	nullfs	rw	0	0"
+trap 'jail -vr ${JAIL_NAME}; umount ${JAIL_PATH}/usr/local/poudriere ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev' EXIT
 
 zfs create "zrpi4/poudriere/${JAIL_NAME}"
 #zfs set jailed=on "zrpi4/poudriere/${JAIL_NAME}"
@@ -50,7 +51,7 @@ cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 if test "$POUDRIERE_NAME" != "freebsd12"; then
 	sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 fi
-jexec ${JAIL_NAME} pkg install -y poudriere lighttpd
+jexec ${JAIL_NAME} pkg install -y poudriere
 echo "
 MAKE_JOBS_NUMBER=2
 OPTIONS_UNSET+=LTO
@@ -89,18 +90,6 @@ if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
     jexec ${JAIL_NAME} poudriere ports -c -f none -M /usr/ports -m null -p custom
 fi
 jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
-
-sed "s/server.port = 80/server.port = $POUDRIERE_PORTNR/" freebsd/lighttpd.conf > ${JAIL_PATH}/usr/local/etc/lighttpd/lighttpd.conf
-cp freebsd/modules.conf ${JAIL_PATH}/usr/local/etc/lighttpd/
-cp freebsd/vhosts.d-poudriere.conf ${JAIL_PATH}/usr/local/etc/lighttpd/vhosts.d/poudriere.conf
-
-jail -v -cm "name=${JAIL_NAME}_lighttpd" persist "path=${JAIL_PATH}" mount.devfs devfs_ruleset=0 \
-    ip4=inherit \
-    allow.mount \
-    allow.mount.devfs \
-    command=/usr/local/etc/rc.d/lighttpd onerestart
-
-echo "poudriere URL: http://$( hostname ).thuis.klop.ws:${POUDRIERE_PORTNR}/"
 
 jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm12 llvm13 llvm14 llvm15 rust go gcc10 ${PREINSTALL_PKGS}
 jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -t
