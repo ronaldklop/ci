@@ -68,7 +68,7 @@ MAKE_JOBS_NUMBER=4
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
-MAKE_JOBS_NUMBER=4
+MAKE_JOBS_NUMBER=3
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
