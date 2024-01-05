@@ -8,7 +8,7 @@ cd ${JAIL_PATH} || exit 1
 
 CROSS_TOOLCHAIN=llvm${LLVM_VER}
 FETCH_ARGS=$( test ! -f base.txz || echo "-i base.txz" )
-JAIL_VERSION=14.0-BETA2
+JAIL_VERSION=14.0-RELEASE
 ARCH=$(uname -m)
 NUM_CPUS=${NUM_CPUS:-$(sysctl -n kern.smp.cpus)}
 
