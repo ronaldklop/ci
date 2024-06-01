@@ -54,7 +54,7 @@ if test "$POUDRIERE_NAME" != "freebsd12"; then
 fi
 jexec ${JAIL_NAME} pkg install -y poudriere
 echo "
-MAKE_JOBS_NUMBER=2
+MAKE_JOBS_NUMBER=3
 OPTIONS_UNSET+=LTO
 .if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
