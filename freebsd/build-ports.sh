@@ -92,7 +92,7 @@ if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
 fi
 jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
 
-jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm15 llvm16 llvm17 llvm18 rust go gcc10 ${PREINSTALL_PKGS}
+jexec ${JAIL_NAME} pkg fetch -y -o "/usr/local/poudriere/data/packages/$POUDRIERE_NAME-custom" llvm17 llvm18 go gcc10 ${PREINSTALL_PKGS}
 jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
 #for p in ${PORTS}; do
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -o $p
