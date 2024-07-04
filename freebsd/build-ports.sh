@@ -67,10 +67,12 @@ MAKE_JOBS_NUMBER=4
 .endif
 .if \${.CURDIR:M*/databases/mongodb6*}
 MAKE_JOBS_NUMBER=4
+WITH_TESTING=yes
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
 MAKE_JOBS_NUMBER=3
+WITH_TESTING=yes
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
