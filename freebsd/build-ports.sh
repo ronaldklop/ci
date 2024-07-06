@@ -73,6 +73,7 @@ WITH_TESTING=yes
 .if \${.CURDIR:M*/databases/mongodb7*}
 MAKE_JOBS_NUMBER=3
 WITH_TESTING=yes
+OPTIONS_SET+=ARMV80A
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
