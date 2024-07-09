@@ -55,7 +55,6 @@ fi
 jexec ${JAIL_NAME} pkg install -y poudriere
 echo "
 MAKE_JOBS_NUMBER=3
-WITH_TESTING_PORTS=databases/mongodb60
 OPTIONS_UNSET+=LTO
 .if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
@@ -63,6 +62,7 @@ MAKE_JOBS_NUMBER=4
 .endif
 .if \${.CURDIR:M*/databases/mongodb5*}
 MAKE_JOBS_NUMBER=4
+WITH_TESTING_PORTS=databases/mongodb50
 #LDFLAGS+= --threads=1
 .endif
 .if \${.CURDIR:M*/databases/mongodb6*}
