@@ -32,7 +32,6 @@ jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rules
     allow.mlock \
     allow.mount \
     allow.mount.devfs \
-    allow.mount.linprocfs \
     allow.mount.procfs \
     allow.mount.nullfs \
     allow.mount.tmpfs \
