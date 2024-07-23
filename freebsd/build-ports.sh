@@ -79,6 +79,11 @@ WITH_TESTING=yes
 OPTIONS_SET+=ARMV80A
 #LDFLAGS+= -Wl,--no-threads
 .endif
+.if \${.CURDIR:M*/databases/mongodb8*}
+MAKE_JOBS_NUMBER=3
+WITH_TESTING=yes
+OPTIONS_SET+=ARMV80A
+.endif
 .if \${.CURDIR:M*/devel/llvm*}
 . if \${MACHINE_CPUARCH} == "aarch64"
 MAKE_JOBS_NUMBER=4
