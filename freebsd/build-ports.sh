@@ -11,12 +11,12 @@ mkdir -p "$JAIL_PATH"
 
 BASE_TAR="$JAIL_PATH/base.txz"
 FETCH_ARGS=$( test ! -f "$BASE_TAR" || echo "-i $BASE_TAR" )
-ARTIFACT_URL="https://artifact.ci.freebsd.org/snapshot/${JAIL_VERSION}/latest/arm64/aarch64/base.txz"
+ARTIFACT_URL="https://artifact.ci.freebsd.org/snapshot/${JAIL_VERSION}/latest/$(uname -m)/$(uname -p)/base.txz"
 if test "${JAIL_VERSION#*-}" = "RELEASE"; then
-    SNAPSHOT_URL="https://download.freebsd.org/releases/arm64/${JAIL_VERSION}/base.txz"
+    SNAPSHOT_URL="https://download.freebsd.org/releases/$(uname -m)/${JAIL_VERSION}/base.txz"
 else
     SNAPSHOT_URL="${ARTIFACT_URL}"
-# "https://download.freebsd.org/snapshots/arm64/${JAIL_VERSION}/base.txz"
+    # "https://download.freebsd.org/snapshots/$(uname -m)/${JAIL_VERSION}/base.txz"
 fi
 fetch -o "$BASE_TAR" ${FETCH_ARGS} "$SNAPSHOT_URL"
 if test ! "$JAIL_PATH/COPYRIGHT" -nt "$BASE_TAR"; then
@@ -32,6 +32,7 @@ jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rules
     allow.mlock \
     allow.mount \
     allow.mount.devfs \
+    allow.mount.linprocfs \
     allow.mount.procfs \
     allow.mount.nullfs \
     allow.mount.tmpfs \
@@ -54,7 +55,9 @@ if test "$POUDRIERE_NAME" != "freebsd12"; then
 fi
 jexec ${JAIL_NAME} pkg install -y poudriere
 echo "
+.if \${MACHINE_CPUARCH} == "aarch64"
 MAKE_JOBS_NUMBER=3
+.endif
 OPTIONS_UNSET+=LTO
 .if \${.CURDIR:M*/databases/mongodb4*}
 MAKE_JOBS_NUMBER=4
@@ -77,7 +80,9 @@ OPTIONS_SET+=ARMV80A
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
+. if \${MACHINE_CPUARCH} == "aarch64"
 MAKE_JOBS_NUMBER=4
+. endif
 .endif
 .if \${.CURDIR:M*/java/openjdk*}
 MAKE_JOBS_NUMBER=4
