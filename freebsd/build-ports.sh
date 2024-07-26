@@ -82,6 +82,7 @@ OPTIONS_SET+=ARMV80A
 MAKE_JOBS_NUMBER=3
 WITH_TESTING=yes
 OPTIONS_SET+=ARMV80A
+LDFLAGS+= -Wl,--threads=1
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
 . if \${MACHINE_CPUARCH} == "aarch64"
