@@ -93,7 +93,7 @@ MAKE_JOBS_NUMBER=4
 MAKE_JOBS_NUMBER=4
 .endif
 #JAVA_VERSION=11
-JAVA_VERSION=12
+JAVA_VERSION=17+
 JAVA_VENDOR=openjdk
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
