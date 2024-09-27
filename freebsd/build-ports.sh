@@ -65,23 +65,19 @@ MAKE_JOBS_NUMBER=4
 .endif
 .if \${.CURDIR:M*/databases/mongodb5*}
 MAKE_JOBS_NUMBER=4
-WITH_TESTING_PORTS=databases/mongodb50
 #LDFLAGS+= --threads=1
 .endif
 .if \${.CURDIR:M*/databases/mongodb6*}
 MAKE_JOBS_NUMBER=4
-WITH_TESTING=yes
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
 MAKE_JOBS_NUMBER=3
-WITH_TESTING=yes
 OPTIONS_SET+=ARMV80A
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb8*}
 MAKE_JOBS_NUMBER=3
-WITH_TESTING=yes
 OPTIONS_SET+=ARMV80A
 LDFLAGS+= -Wl,--threads=1
 .endif
