@@ -99,7 +99,7 @@ if test -n "$REMOVE_POUDRIERE"; then
 	jexec ${JAIL_NAME} poudriere jail -d -j "$POUDRIERE_NAME"
 fi
 if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
-    jexec ${JAIL_NAME} poudriere jail -c -j "$POUDRIERE_NAME" -v "$POUDRIERE_VERSION"
+    jexec ${JAIL_NAME} poudriere jail -c -j "$POUDRIERE_NAME" -v "$POUDRIERE_VERSION" ${POUDRIERE_ARCH}
     jexec ${JAIL_NAME} poudriere ports -c -f none -M /usr/ports -m null -p custom
 fi
 jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
