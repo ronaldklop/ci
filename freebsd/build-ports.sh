@@ -103,7 +103,7 @@ if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
     jexec ${JAIL_NAME} poudriere ports -c -f none -M /usr/ports -m null -p custom
 fi
 LASTUPDATE=${JAIL_PATH}/poudriere_jail_lastupdate
-if test "X$(find ${LASTUPDATE} -mtime -10d)" != "X$LASTUPDATE}"
+if test "X$(find ${LASTUPDATE} -mtime -10d)" != "X${LASTUPDATE}"
 then
     jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
     touch ${LASTUPDATE}
