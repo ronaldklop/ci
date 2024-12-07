@@ -102,7 +102,11 @@ if ! jexec ${JAIL_NAME} poudriere jail -i -j "$POUDRIERE_NAME"; then
     jexec ${JAIL_NAME} poudriere jail -c -j "$POUDRIERE_NAME" -v "$POUDRIERE_VERSION" ${POUDRIERE_ARCH}
     jexec ${JAIL_NAME} poudriere ports -c -f none -M /usr/ports -m null -p custom
 fi
-jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
+if "X$(find ${JAIL_PATH}/poudriere_jail_last_update -mtime +10d)" == "Xpoudriere_jail_lastupate"
+then
+    jexec ${JAIL_NAME} poudriere jail -u -j "$POUDRIERE_NAME"
+    touch {JAIL_PATH}/poudriere_jail_last_update
+fi
 
 jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
 #for p in ${PORTS}; do
