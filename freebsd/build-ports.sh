@@ -73,7 +73,6 @@ MAKE_JOBS_NUMBER=4
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
 MAKE_JOBS_NUMBER=3
-OPTIONS_SET+=ARMV80A
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb8*}
