@@ -72,7 +72,7 @@ MAKE_JOBS_NUMBER=4
 #LDFLAGS+= -Wl,--no-threads
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
-FLAVOR=armv80a
+#FLAVOR=armv80a
 MAKE_JOBS_NUMBER=3
 LDFLAGS+= -Wl,--threads=1
 .endif
