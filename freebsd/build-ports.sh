@@ -54,7 +54,7 @@ if test "$POUDRIERE_NAME" != "freebsd12"; then
 fi
 jexec ${JAIL_NAME} pkg install -y poudriere
 echo "
-WITH_TESTING_PORTS="${PORTS}"
+WITH_TESTING_PORTS="${PORTS%@*}"
 .if \${MACHINE_CPUARCH} == "aarch64"
 MAKE_JOBS_NUMBER=3
 .endif
