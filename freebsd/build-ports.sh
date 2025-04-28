@@ -78,7 +78,7 @@ LDFLAGS+= -Wl,--threads=1
 .endif
 .if \${.CURDIR:M*/databases/mongodb8*}
 #FLAVOR=armv80a
-MAKE_JOBS_NUMBER=2
+MAKE_JOBS_NUMBER=3
 LDFLAGS+= -Wl,--threads=1
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
