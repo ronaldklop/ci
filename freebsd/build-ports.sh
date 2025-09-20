@@ -87,7 +87,7 @@ MAKE_JOBS_NUMBER=4
 . endif
 .endif
 .if \${.CURDIR:M*/java/openjdk*}
-MAKE_JOBS_NUMBER=4
+MAKE_JOBS_NUMBER=3
 .endif
 #JAVA_VERSION=11
 #JAVA_VERSION=17+
