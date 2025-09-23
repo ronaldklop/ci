@@ -52,7 +52,7 @@ cp -p /etc/resolv.conf ${JAIL_PATH}/etc/
 if test "$POUDRIERE_NAME" != "freebsd12"; then
 	sed -i .sed.bak s/quarterly/latest/ ${JAIL_PATH}/etc/pkg/FreeBSD.conf
 fi
-jexec ${JAIL_NAME} pkg install -y poudriere
+jexec ${JAIL_NAME} pkg install -y poudriere-devel
 echo "
 WITH_TESTING_PORTS="${PORTS%@*}"
 .if \${MACHINE_CPUARCH} == "aarch64"
@@ -109,7 +109,7 @@ then
     touch ${LASTUPDATE}
 fi
 
-jexec ${JAIL_NAME} nice -n 15 poudriere bulk -vv -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
+jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
 #for p in ${PORTS}; do
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -b latest -o $p
 #done
