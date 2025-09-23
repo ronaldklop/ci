@@ -109,7 +109,7 @@ then
     touch ${LASTUPDATE}
 fi
 
-jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
+jexec ${JAIL_NAME} nice -n 15 poudriere bulk -vv -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
 #for p in ${PORTS}; do
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -b latest -o $p
 #done
