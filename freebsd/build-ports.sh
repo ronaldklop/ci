@@ -55,6 +55,7 @@ fi
 jexec ${JAIL_NAME} pkg install -y poudriere-devel
 echo "
 WITH_TESTING_PORTS="${PORTS%@*}"
+POUDRIERE_TEST="-t"
 .if \${MACHINE_CPUARCH} == "aarch64"
 MAKE_JOBS_NUMBER=3
 .endif
@@ -91,6 +92,9 @@ MAKE_JOBS_NUMBER=3
 .endif
 #JAVA_VERSION=11
 #JAVA_VERSION=17+
+.if \${.CURDIR:M*/math/R-*}
+POUDRIERE_TEST=
+.endif
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
@@ -109,7 +113,7 @@ then
     touch ${LASTUPDATE}
 fi
 
-jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest -t
+jexec ${JAIL_NAME} nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -p custom -f /usr/local/etc/poudriere.d/port-list -b latest $POUDRIERE_TEST
 #for p in ${PORTS}; do
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -b latest -o $p
 #done
