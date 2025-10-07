@@ -92,10 +92,6 @@ MAKE_JOBS_NUMBER=3
 .endif
 #JAVA_VERSION=11
 #JAVA_VERSION=17+
-.if \${.CURDIR:M*/math/R-*}
-POUDRIERE_TEST=
-WITH_TESTING_PORTS=
-.endif
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
