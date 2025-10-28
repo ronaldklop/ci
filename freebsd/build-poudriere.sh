@@ -49,6 +49,8 @@ MAKE_JOBS_NUMBER=3
 
 echo "${PORTS}" > /tmp/port-list
 
+pw groupadd -n frits -g 65532
+pw useradd -n frits -u 65532 -g frits
 cp freebsd/poudriere-zfs.conf /usr/local/etc/poudriere.conf
 
 if test -n "$REMOVE_POUDRIERE"; then
