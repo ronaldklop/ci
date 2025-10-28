@@ -94,6 +94,9 @@ MAKE_JOBS_NUMBER=3
 #JAVA_VERSION=17+
 " > ${JAIL_PATH}/usr/local/etc/poudriere.d/make.conf
 echo "${PORTS}" > ${JAIL_PATH}/usr/local/etc/poudriere.d/port-list
+
+jexec ${JAIL_NAME} pw groupadd -n frits -g 65532
+jexec ${JAIL_NAME} pw useradd -n frits -u 65532 -g frits
 cp freebsd/poudriere.conf ${JAIL_PATH}/usr/local/etc/
 
 if test -n "$REMOVE_POUDRIERE"; then
