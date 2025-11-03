@@ -41,8 +41,8 @@ jail -vc "name=${JAIL_NAME}" persist "path=${JAIL_PATH}" mount.devfs devfs_rules
     "mount=/usr/local/poudriere/data/packages	${JAIL_PATH}/usr/local/poudriere/data/packages	nullfs	rw,nocache	0	0" \
     "mount=/usr/local/poudriere/data/logs/bulk	${JAIL_PATH}/usr/local/poudriere/data/logs/bulk	nullfs	rw,nocache	0	0"
 trap 'jail -vr ${JAIL_NAME}; mount -t nullfs \
-	; umount ${JAIL_PATH}/usr/local/poudriere/data/logs/bulk ${JAIL_PATH}/usr/local/poudriere/data/packages ${JAIL_PATH}/usr/local/poudriere ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev \
-	; umount -f ${JAIL_PATH}/usr/local/poudriere/data/logs/bulk ${JAIL_PATH}/usr/local/poudriere/data/packages ${JAIL_PATH}/usr/local/poudriere ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev' EXIT
+	; umount ${JAIL_PATH}/usr/local/poudriere/data/logs/bulk ${JAIL_PATH}/usr/local/poudriere/data/packages ${JAIL_PATH}/usr/local/poudriere ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev
+	|| umount -f ${JAIL_PATH}/usr/local/poudriere/data/logs/bulk ${JAIL_PATH}/usr/local/poudriere/data/packages ${JAIL_PATH}/usr/local/poudriere ${JAIL_PATH}/usr/ports ${JAIL_PATH}/dev' EXIT
 
 #jexec ${JAIL_NAME} truncate -s 0 /etc/src.conf
 #jexec ${JAIL_NAME} echo "NO_INSTALLEXTRAKERNELS=no" >> /etc/src.conf
