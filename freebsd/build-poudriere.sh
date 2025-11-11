@@ -10,7 +10,7 @@ echo "
 WITH_TESTING_PORTS="${PORTS%@*}"
 POUDRIERE_TEST="-t"
 .if \${MACHINE_CPUARCH} == "aarch64"
-MAKE_JOBS_NUMBER=3
+MAKE_JOBS_NUMBER=4
 .endif
 OPTIONS_UNSET+=LTO
 .if \${.CURDIR:M*/databases/mongodb4*}
@@ -27,12 +27,12 @@ MAKE_JOBS_NUMBER=4
 .endif
 .if \${.CURDIR:M*/databases/mongodb7*}
 #FLAVOR=armv80a
-MAKE_JOBS_NUMBER=3
+MAKE_JOBS_NUMBER=4
 LDFLAGS+= -Wl,--threads=1
 .endif
 .if \${.CURDIR:M*/databases/mongodb8*}
 #FLAVOR=armv80a
-MAKE_JOBS_NUMBER=3
+MAKE_JOBS_NUMBER=4
 LDFLAGS+= -Wl,--threads=1
 .endif
 .if \${.CURDIR:M*/devel/llvm*}
@@ -41,7 +41,7 @@ MAKE_JOBS_NUMBER=4
 . endif
 .endif
 .if \${.CURDIR:M*/java/openjdk*}
-MAKE_JOBS_NUMBER=3
+MAKE_JOBS_NUMBER=4
 .endif
 #JAVA_VERSION=11
 #JAVA_VERSION=17+
