@@ -1,5 +1,8 @@
 #! /bin/sh
 
+echo "${ENVIRONMENT}" > /tmp/jenkins-environment
+. /tmp/jenkins-environment
+
 test -n "$JAIL_PATH" || ( echo "JAIL_PATH is unset" && exit 1 )
 test -n "$JAIL_NAME" || ( echo "JAIL_NAME is unset" && exit 1 )
 test -n "$JAIL_VERSION" || ( echo "JAIL_VERSION is unset" && exit 1 )

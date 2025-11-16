@@ -1,5 +1,8 @@
 #! /bin/sh
 
+echo "${ENVIRONMENT}" > /tmp/jenkins-environment
+. /tmp/jenkins-environment
+
 test -n "$PORTS" || ( echo "PORTS is unset" && exit 1 )
 test -n "$POUDRIERE_NAME" || ( echo "POUDRIERE_NAME is unset" && exit 1 )
 test -n "$POUDRIERE_VERSION" || ( echo "POUDRIERE_VERSION is unset" && exit 1 )
