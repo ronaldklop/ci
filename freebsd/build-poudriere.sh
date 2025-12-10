@@ -48,6 +48,7 @@ MAKE_JOBS_NUMBER=4
 .endif
 #JAVA_VERSION=11
 #JAVA_VERSION=17+
+${EXTRA_MAKE_ENV}
 " > /usr/local/etc/poudriere.d/make.conf
 
 echo "${PORTS}" > /tmp/port-list
