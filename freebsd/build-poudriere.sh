@@ -16,18 +16,6 @@ POUDRIERE_TEST="-t"
 MAKE_JOBS_NUMBER=4
 .endif
 OPTIONS_UNSET+=LTO
-.if \${.CURDIR:M*/databases/mongodb4*}
-MAKE_JOBS_NUMBER=4
-#LDFLAGS+= -Wl,--no-threads
-.endif
-.if \${.CURDIR:M*/databases/mongodb5*}
-MAKE_JOBS_NUMBER=4
-#LDFLAGS+= --threads=1
-.endif
-.if \${.CURDIR:M*/databases/mongodb6*}
-MAKE_JOBS_NUMBER=4
-#LDFLAGS+= -Wl,--no-threads
-.endif
 .if \${.CURDIR:M*/databases/mongodb7*}
 #FLAVOR=armv80a
 MAKE_JOBS_NUMBER=4
