@@ -59,7 +59,7 @@ then
     touch ${LASTUPDATE}
 fi
 
-nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -B "$(date +%Y-%m-%d_%H:%M:%S) ${BUILD_TAG}" -p custom -f /tmp/port-list -b latest $POUDRIERE_TEST
+nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -B "$(date +%Y-%m-%d_%H:%M:%S)-${BUILD_TAG}" -p custom -f /tmp/port-list -b latest $POUDRIERE_TEST
 #for p in ${PORTS}; do
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -b latest -o $p
 #done
