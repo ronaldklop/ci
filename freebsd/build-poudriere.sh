@@ -10,8 +10,6 @@ test -n "$POUDRIERE_VERSION" || ( echo "POUDRIERE_VERSION is unset" && exit 1 )
 pkg install -y poudriere-devel
 
 echo "
-WITH_TESTING_PORTS="${PORTS%@*}"
-POUDRIERE_TEST="-t"
 .if \${MACHINE_CPUARCH} == "aarch64"
 MAKE_JOBS_NUMBER=4
 .endif
