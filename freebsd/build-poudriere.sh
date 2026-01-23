@@ -62,3 +62,4 @@ nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -B "$(date +%Y-%m-%d_%Hh%Mm%S)-${
 #for p in ${PORTS}; do
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -b latest -o $p
 #done
+rsync -av --delete /usr/local/poudriere/data/packages/* pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/
