@@ -41,6 +41,7 @@ echo "${PORTS}" > /tmp/port-list
 
 pw groupadd -n frits -g 65532
 pw useradd -n frits -u 65532 -g frits
+mkdir -p /var/tmp/distfiles
 cp freebsd/poudriere-zfs.conf /usr/local/etc/poudriere.conf
 
 if test -n "$REMOVE_POUDRIERE"; then
