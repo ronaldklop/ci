@@ -66,6 +66,6 @@ rsync -av --delete \
 	/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/* \
 	pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/
 echo ".latest/" > /tmp/rsync_files.txt
-rsync -av -r --delete --from-files=/tmp/rsync_files.txt \
+rsync -av -r --delete --files-from=/tmp/rsync_files.txt \
 	/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/ \
 	pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/
