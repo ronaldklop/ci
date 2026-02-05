@@ -63,9 +63,9 @@ nice -n 15 poudriere bulk -j "$POUDRIERE_NAME" -B "$(date +%Y-%m-%d_%Hh%Mm%S)-${
 #    jexec ${JAIL_NAME} nice -n 20 poudriere testport -j "$POUDRIERE_NAME" -p custom -b latest -o $p
 #done
 rsync -av --delete \
-	/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/* \
-	pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/
+	/usr/local/poudriere/data/packages/${POUDRIERE_NAME}-custom/* \
+	pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/${POUDRIERE_NAME}-custom/
 echo ".latest/" > /tmp/rsync_files.txt
 rsync -av -r --delete --files-from=/tmp/rsync_files.txt \
-	/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/ \
-	pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/${POUDRIERE_NAME}/
+	/usr/local/poudriere/data/packages/${POUDRIERE_NAME}-custom/ \
+	pkg.thuis.klop.ws:/usr/local/poudriere/data/packages/${POUDRIERE_NAME}-custom/
