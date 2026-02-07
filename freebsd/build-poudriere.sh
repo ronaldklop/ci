@@ -29,9 +29,6 @@ LDFLAGS+= -Wl,--threads=1
 MAKE_JOBS_NUMBER=4
 . endif
 .endif
-.if \${.CURDIR:M*/java/openjdk*}
-MAKE_JOBS_NUMBER=4
-.endif
 #JAVA_VERSION=11
 #JAVA_VERSION=17+
 ${EXTRA_MAKE_ENV}
