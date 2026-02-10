@@ -10,27 +10,25 @@ test -n "$POUDRIERE_VERSION" || ( echo "POUDRIERE_VERSION is unset" && exit 1 )
 pkg install -y poudriere-devel
 
 echo "
-.if \${MACHINE_CPUARCH} == "aarch64"
-MAKE_JOBS_NUMBER=4
-.endif
+#.if \${MACHINE_CPUARCH} == "aarch64"
+#MAKE_JOBS_NUMBER=4
+#.endif
 OPTIONS_UNSET+=LTO
-.if \${.CURDIR:M*/databases/mongodb7*}
-#FLAVOR=armv80a
-MAKE_JOBS_NUMBER=4
-LDFLAGS+= -Wl,--threads=1
-.endif
-.if \${.CURDIR:M*/databases/mongodb8*}
-#FLAVOR=armv80a
-MAKE_JOBS_NUMBER=4
-LDFLAGS+= -Wl,--threads=1
-.endif
-.if \${.CURDIR:M*/devel/llvm*}
-. if \${MACHINE_CPUARCH} == "aarch64"
-MAKE_JOBS_NUMBER=4
-. endif
-.endif
-#JAVA_VERSION=11
-#JAVA_VERSION=17+
+#.if \${.CURDIR:M*/databases/mongodb7*} && \${MACHINE_CPUARCH} == "aarch64"
+##FLAVOR=armv80a
+#MAKE_JOBS_NUMBER=4
+#LDFLAGS+= -Wl,--threads=1
+#.endif
+#.if \${.CURDIR:M*/databases/mongodb8*} && \${MACHINE_CPUARCH} == "aarch64"
+##FLAVOR=armv80a
+#MAKE_JOBS_NUMBER=4
+#LDFLAGS+= -Wl,--threads=1
+#.endif
+#.if \${.CURDIR:M*/devel/llvm*}
+#. if \${MACHINE_CPUARCH} == "aarch64"
+#MAKE_JOBS_NUMBER=4
+#. endif
+#.endif
 ${EXTRA_MAKE_ENV}
 " > /usr/local/etc/poudriere.d/make.conf
 
