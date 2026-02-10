@@ -14,11 +14,9 @@ echo "
 #MAKE_JOBS_NUMBER=4
 #.endif
 OPTIONS_UNSET+=LTO
-#.if \${.CURDIR:M*/databases/mongodb7*} && \${MACHINE_CPUARCH} == "aarch64"
-##FLAVOR=armv80a
-#MAKE_JOBS_NUMBER=4
-#LDFLAGS+= -Wl,--threads=1
-#.endif
+.if \${.CURDIR:M*/databases/mongodb*}
+LDFLAGS+= -Wl,--threads=1
+.endif
 #.if \${.CURDIR:M*/databases/mongodb8*} && \${MACHINE_CPUARCH} == "aarch64"
 ##FLAVOR=armv80a
 #MAKE_JOBS_NUMBER=4
