@@ -39,7 +39,7 @@ cp freebsd/poudriere-zfs.conf /usr/local/etc/poudriere.conf
 if test -n "$REMOVE_POUDRIERE"; then
 	poudriere jail -d -j "$POUDRIERE_NAME"
 fi
-if ! poudriere jail -i -j "$POUDRIERE_NAME"; then
+if ! poudriere -v jail -i -j "$POUDRIERE_NAME"; then
     poudriere jail -c -j "$POUDRIERE_NAME" -v "$POUDRIERE_VERSION" ${POUDRIERE_ARCH}
     poudriere ports -c -f none -M /usr/ports -m null -p custom
 fi
